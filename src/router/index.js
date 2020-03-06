@@ -4,7 +4,7 @@ import Vue from 'vue'
 import BasePage from '../components/BasePage'
 import LoginPage from '../components/LoginPage'
 import AddUserPage from '../components/AddUserPage'
-import TasksPage from '../components/TasksPage'
+import LandingPage from '../components/LandingPage'
 
 Vue.use(Router)
 
@@ -29,7 +29,7 @@ function configRoutes(){
                 {
                     path: 'tasks',
                     name: 'tasks',
-                    component: TasksPage,
+                    component: LandingPage,
                 },
             ]
         }

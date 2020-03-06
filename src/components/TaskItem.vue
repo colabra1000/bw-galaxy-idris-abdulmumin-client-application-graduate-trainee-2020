@@ -3,7 +3,7 @@
         <b-card-header header-tag="header" class="p-1" role="tab">
             <b-row>
                 <b-col md="9" order-md="2">
-                    <div>{{taskName}}</div>
+                    <div>{{short_description}}</div>
                 </b-col>
                 <b-col md="3" order-md="1">
                     <b-button squared size="sm" href="#" v-b-toggle="name" class="btn w-100" :class="[task.completed ? 'btn-info' : 'btn-warning']">more...</b-button>
@@ -12,8 +12,9 @@
         </b-card-header>
         <b-collapse :id="name" accordion="my-accordion" role="tabpanel">
             <b-card-body>
-            <b-card-text>Owner: {{$store.state.user.name}}</b-card-text>
-            <b-card-text>Completed : {{task.completed}}</b-card-text>
+            <b-card-text>Owner: {{owner}}</b-card-text>
+            <b-card-text>Completed : {{completed}}</b-card-text>
+            <b-card-text>Description : {{description}}</b-card-text>
             </b-card-body>
         </b-collapse>
     </b-card>
@@ -23,21 +24,23 @@
 export default {
     props: {
         task:{
-            default : {
-                id:1,
-                name: 'rob',
-                completed: false,
-            },
-            required:false
+           
         }
     },
 
     data(){
         return {
-            taskName : this.task.name,
-            name : this.taskName+this.task.id.toString(),
+            id: this.task.id,
+            description : this.task.description,
+            short_description: this.task.short_description,
+            completed : this.task.completed,
+            created_on: this.task.created_on,
+            owner: this.task.owner,
+
+            name: this.task.id.toString(),
         }
-    }
+    },  
+    computed:{}
 
 }
 </script>

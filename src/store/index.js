@@ -16,15 +16,26 @@ export default new Vuex.Store({
             id: 1,
             username: '',
             email: '',
-            roles: [],
+            role: '',
+            accesstoken: ''
         },
 
-        accesstoken: ''
+        users: [],
+
+        
     },
 
     mutations:{
+
+        saveTask(state, payload){
+            state.tasks.push(payload) 
+        },
+
         getTasks(state, payload){
             state.tasks = payload   
+        },
+        getUsers(state, payload){
+            state.users = payload   
         },
         saveUser(state, payload){
             state.user = payload.data
@@ -34,21 +45,47 @@ export default new Vuex.Store({
             state.user.id = payload.id
             state.user.username = payload.username
             state.user.email = payload.email
-            state.user.roles = payload.roles
-
-            state.accesstoken = payload.accesstoken
+            state.user.role = payload.role
+            state.user.accesstoken = payload.accesstoken
         }
     },
 
     actions:{
 
+
        
 
+        addTask(context, payload){
+            
+        return new Promise((resolve, reject) => {
+            let url = 'http://localhost:8080/task/save'
+            axios.post(url, payload).then((result) => {
+                context.commit('saveTask', result.data)
+                resolve()
+            }).catch((error) => {
+                reject(error)
+            })  
+        })
+           
+              
+        },
         getTasks(context){
             return new Promise((resolve, reject) => {
                 let url = 'http://localhost:8080/task/user/'+context.state.user.id
                 axios.get(url).then((result) => {
                     context.commit('getTasks', result.data)
+                    resolve(result)
+                }).catch((error)=>{
+                    reject(error)
+                })
+            })
+        },
+
+        getUsers(context){
+            return new Promise((resolve, reject) => {
+                let url = 'http://localhost:8080/user/all/'
+                axios.get(url).then((result) => {
+                    context.commit('getUsers', result.data)
                     resolve(result)
                 }).catch((error)=>{
                     reject(error)
