@@ -101,7 +101,7 @@ export default {
             },
 
             roles: [
-                {text: 'User', value: ['admin']},
+                {text: 'User', value: ['user']},
                 {text: 'Admin', value: ['admin', 'user']}
             ],
 

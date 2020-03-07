@@ -1,18 +1,16 @@
 
 <template>
     <b-card>
-        <b-row>
-            <b-col sm="8" offset-sm="4">
-                <b-button v-b-toggle="'addTask'"  mx-3 my-3 variant="outline-success">Add Task</b-button>
-                <b-button @click="goToAddUser"  class="mx-3 my-3" variant="outline-warning">Add User</b-button>
-            </b-col>
-        </b-row>
+        <div v-if="isAdmin" class="d-flex justify-content-center">
+            
+            <b-button v-b-toggle="'addTask'"  class="mx-3 my-3" variant="outline-success">Add Task</b-button>
+            <b-button @click="goToAddUser"  class="mx-3 my-3" variant="outline-warning">Add User</b-button>
+            
+        </div>
 
-        <AddTask :collapseId="'addTask'" :mappedUsers="mappedUsers" @TaskSubmit="onSubmitNewTask"></AddTask>
+        <AddTask class="mt-5" :collapseId="'addTask'" :mappedUsers="mappedUsers" @TaskSubmit="onSubmitNewTask"></AddTask>
 
-        
-
-        <TaskList :tasks="mappedTasks"></TaskList>
+        <TaskList class="mt-5" :tasks="mappedTasks" @updateTask="updateTask"></TaskList>
 
     </b-card>
 </template>
@@ -36,17 +34,19 @@ export default {
 
             mappedUsers: [],
 
+            editing: false
+
         }
     },
 
 
     created(){
        this.initializePage();
+       
     },
 
     watch:{
         $route(){
-           
             this.initializePage();
             
         }
@@ -61,6 +61,7 @@ export default {
       
 
         onSubmitNewTask(form){
+            console.log(form.completed)
             this.$store.dispatch("addTask", {
                 description : form.detailedDescription,
                 short_description : form.description,
@@ -76,20 +77,26 @@ export default {
 
         initializePage(){
 
+            this.$store.commit('saveUserDataFromJwt')
+
              this.$store.dispatch("getUsers").then(()=>{
                 this.mapUser()
-            }).catch((error)=>{
-                console.log(error)
-            }) 
 
+                if(this.isAdmin){
 
-            //gets tasks for user
-            this.$store.dispatch("getTasks").then(()=>{
-                this.mapTask()
-            }).catch((error)=> {
-                console.log(error)
+                    this.$store.dispatch("getAllTasks").then(()=>{
+    
+                        this.mapTask()
+                    })
+                }else{
+                        this.$store.dispatch("getTasksForUser").then(()=>{
+        
+                            this.mapTask()
+                        })
+
+                }
+
             })
-
            
         },
 
@@ -100,12 +107,13 @@ export default {
                 return {
                    value : user.id,
                     text : user.username,
+                    role : user.userRole
                 }
             })
 
             this.$forceUpdate
 
-            console.log(this.mappedUsers);
+           
 
         },
          mapTask(){
@@ -116,19 +124,40 @@ export default {
                     description: task.description,
                     short_description: task.short_description,
                     completed: task.completed,
-                    owner: this.mappedUsers.filter((user) => {
-                        return task.owner == user.value
+                    owner: this.mappedUsers.filter((item) => {
+                        return task.owner == item.value
                     })[0].text,
                     created_on: task.created_on,
                 }
             })
 
-
-
             this.$forceUpdate
 
-            console.log(this.mappedTasks)
+        },
 
+        updateTask(task){
+            if(this.editing){
+                return
+            }
+
+            this.editing = true
+
+            this.$store.dispatch('updateTask', {
+                id :task.id,
+                description : task.description,
+                short_description: task.short_description,
+                completed : task.completed,
+                owner: this.mappedUsers.filter((item) => {
+                        return task.owner == item.text
+                    })[0].value,
+                created_on : task.created_on
+            }).then (() => {
+                this.mapTask()
+                this.$forceUpdate
+               this.editing = false
+            }).catch(() => {
+                this.editing = false
+            })
         }
     },
 
@@ -141,6 +170,10 @@ export default {
         users(){
             return this.$store.state.users
         },
+
+        isAdmin(){
+            return this.$store.getters.isAdmin
+        }
 
     }
 }

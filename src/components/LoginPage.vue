@@ -46,17 +46,18 @@ export default {
     methods:{
         onSubmit(evt){
             evt.preventDefault()
+            localStorage.removeItem('user-token')
             this.$store.dispatch("login", { 'username' : this.form.username,
                                             'password': this.form.password
             }).then(() =>{
-                console.log('mee')
-                console.log(this.$store.state.user)
-                // this.$router.push({name :'tasks'})
-            }).catch((error) => {
-                console.log(error)
-                //  this.$router.push({name :'tasks'})
+                this.$nextTick(()=> {
+                    this.$router.push({name :'tasks'})
+                    console.log(localStorage)
+                })
+                
+                
             })
-            // console.log(JSON.stringify(this.form))
+           
         }
     }
 

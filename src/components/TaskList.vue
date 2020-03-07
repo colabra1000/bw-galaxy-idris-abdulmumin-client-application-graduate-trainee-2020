@@ -1,7 +1,7 @@
 <template>
     <b-list-group>
         <b-list-group-item v-for="task in d_tasks" :key="task.id" class="p-0">
-            <TaskItem :task="task"></TaskItem>
+            <TaskItem :task="task" @updateTask="onUpdateTask"></TaskItem>
         </b-list-group-item>
     </b-list-group>
 </template>
@@ -35,6 +35,12 @@ export default {
 
     mounted(){
 
+    },
+
+    methods:{
+        onUpdateTask(task){
+            this.$emit('updateTask', task)
+        }
     }
 }
 </script>
