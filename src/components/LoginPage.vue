@@ -52,7 +52,7 @@ export default {
             }).then(() =>{
                 this.$nextTick(()=> {
                     this.$router.push({name :'tasks'})
-                    console.log(localStorage)
+                   
                 })
                 
                 

@@ -61,7 +61,6 @@ export default {
       
 
         onSubmitNewTask(form){
-            console.log(form.completed)
             this.$store.dispatch("addTask", {
                 description : form.detailedDescription,
                 short_description : form.description,

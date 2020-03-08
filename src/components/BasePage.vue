@@ -3,7 +3,7 @@
       <Nav></Nav>
       <b-card no-body>
             <b-card-header> 
-                <div class="display-3 text-center"> Bw - Galaxy - 01</div> 
+                <div class="display-3 text-center"> Bw - Galaxytm</div> 
             </b-card-header>
             <router-view></router-view>
         </b-card>

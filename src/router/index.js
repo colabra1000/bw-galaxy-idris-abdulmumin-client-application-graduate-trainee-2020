@@ -49,8 +49,6 @@ function configRoutes(){
                     component: LandingPage,
                     beforeEnter: (to, from, next) => {
                         
-                        // console.log(localStorage)
-                        console.log(Store.getters.authenticated)
 
                      if(Store.getters.authenticated){
                          next()

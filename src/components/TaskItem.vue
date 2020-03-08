@@ -17,9 +17,10 @@
         </b-card-header>
         <b-collapse :id="name" accordion="my-accordion" role="tabpanel">
             <b-card-body>
-            <b-card-text>Owner: {{m_task.owner}}</b-card-text>
-            <b-card-text>Completed : {{m_task.completed}}</b-card-text>
-            <b-card-text>Description : {{m_task.description}}</b-card-text>
+            <b-card-text class="d-flex">Owner: <div class="text-primary mx-3 h5">{{m_task.owner}}</div></b-card-text>
+            <b-card-text class="d-flex">Completed : <div class="text-primary mx-3 h5">{{m_task.completed}}</div></b-card-text>
+            <b-card-text class="d-flex" >Created on : <div class="text-primary mx-3 h5">{{new Date(m_task.created_on).toLocaleString()}}</div></b-card-text>
+            <b-card-text class="d-flex">Description : <div class="text-primary mx-3 h5">{{m_task.description}}</div></b-card-text>
             
             <b-checkbox v-if="!task.completed && !isAdmin" v-model="m_task.completed">Complete Task</b-checkbox>
             <div @click="updateTask" v-if="!task.completed && !isAdmin" class="d-flex justify-content-center"><b-button variant="primary">SAVE</b-button></div>
