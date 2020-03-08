@@ -11,7 +11,7 @@
         <AddTask class="mt-5" :collapseId="'addTask'" :mappedUsers="mappedUsers" @TaskSubmit="onSubmitNewTask"></AddTask>
 
         <TaskList class="mt-5" :tasks="mappedTasks" @updateTask="updateTask"></TaskList>
-
+ 
     </b-card>
 </template>
 
